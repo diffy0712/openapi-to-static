@@ -3,6 +3,7 @@
  */
 import {OpenApiSchemaObject} from '../Model/OpenApi/OpenApiSchemaObject';
 import {isOpenApiReferenceObject, OpenApiReferenceObject} from "../Model/OpenApi/OpenApiReferenceObject";
+import * as _ from "lodash";
 
 
 /**
@@ -105,5 +106,5 @@ export const getTypeOfOpenApiSchemaType = (schema: OpenApiSchemaObject): string 
 		return 'void';
 	}
 
-	return schema.type;
+	return _.camelCase(schema.type);
 };

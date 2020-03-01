@@ -1,9 +1,10 @@
 {
   "name": "openapi-typescript-sync",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Generate static typescript files from openapi.json! ",
   "repository": "https://gitlab.com/diffy0712/openapi-ts-sync",
   "scripts": {
+    "build": "node node_modules/.bin/tsc",
     "lint": "yarn eslint . --ext .js,.jsx,.ts,.tsx"
   },
   "keywords": [
