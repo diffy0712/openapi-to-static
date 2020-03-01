@@ -21,6 +21,10 @@ $ npm install openapi-typescript-sync --save-dev
 ```
 
 # Todo
+- [ ] Bootstrap authentication
+- [ ] Documentation for generators
+- [ ] Example for generators
+- [ ] Fix: in createArticle, there is an object as response, which should be an ArticleResponse
 - [ ] write tests
 - [ ] add header parameters as header parameters, now the authorization
       must be placed as a parameter, which does nothing and as AxiosRequestOptions.
