@@ -26,7 +26,7 @@ export interface GeneratorConfigInterface {
 	 * Not required since, you might want to define
 	 * the template in your generator.
 	 */
-	template?: string;
+	template: string;
 
 	/**
 	 * Any options to pass to the generator

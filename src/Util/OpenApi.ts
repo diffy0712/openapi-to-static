@@ -2,6 +2,7 @@
  * @param schema
  */
 import {OpenApiSchemaObject} from '../Model/OpenApi/OpenApiSchemaObject';
+import {isOpenApiReferenceObject, OpenApiReferenceObject} from "../Model/OpenApi/OpenApiReferenceObject";
 
 
 /**
@@ -38,16 +39,22 @@ export const getSchemaImports = (schema: OpenApiSchemaObject): string|null => {
 /**
  * @param schema
  */
-export const getReferencedSchemas = (schema: OpenApiSchemaObject): string[] => {
+export const getReferencedSchemas = (schema: OpenApiSchemaObject | OpenApiReferenceObject): string[] => {
 	const imports: string[] = [];
+
+	if (isOpenApiReferenceObject(schema)){
+		return [];
+	}
 
 	if (schema.properties) {
 		const propertyNames = Object.keys(schema.properties);
 		propertyNames.forEach((value: string, index: number) => {
-			const propertySchema: OpenApiSchemaObject = schema.properties[propertyNames[index]] as OpenApiSchemaObject;
-			const propertySchemaImports = getSchemaImports(propertySchema);
-			if (propertySchemaImports) {
-				imports.push(propertySchemaImports);
+			if (schema.properties) {
+				const propertySchema: OpenApiSchemaObject = schema.properties[propertyNames[index]] as OpenApiSchemaObject;
+				const propertySchemaImports = getSchemaImports(propertySchema);
+				if (propertySchemaImports) {
+					imports.push(propertySchemaImports);
+				}
 			}
 		});
 	}

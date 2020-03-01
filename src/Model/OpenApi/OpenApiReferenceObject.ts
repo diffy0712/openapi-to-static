@@ -12,3 +12,24 @@ export interface OpenApiReferenceObject {
 	 */
 	$ref: string;
 }
+
+/**
+ * OpenApiReferenceObject occurs a lot.
+ * ex: components: OpenApiComponentObject | OpenApiReferenceObject;
+ * This needs to be checked later.
+ *
+ * Example usage:
+ * let object: Foo | Bar;
+ * if (isFoo(object)) {
+ * 	// `object` has type `Foo`. object.fooProperty;
+ * } else {
+ * 	// `object` has type `Bar`.
+ * 	object.barProperty;
+ * }
+ * @source https://stackoverflow.com/questions/14425568/interface-type-check-with-typescript
+ * @source https://www.typescriptlang.org/docs/handbook/advanced-types.html
+ * @param object
+ */
+export function isOpenApiReferenceObject(object: any): object is OpenApiReferenceObject {
+	return '$ref' in object;
+}

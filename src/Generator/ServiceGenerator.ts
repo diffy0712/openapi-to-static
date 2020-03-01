@@ -1,6 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 // @ts-ignore
-import * as chalk from 'chalk';
 import * as _ from 'lodash';
 import {OpenApiOperationObject, OpenApiPathItemObject} from '../Model/OpenApi/OpenApiPathsObject';
 import {OpenApi} from '../Model/OpenApi/OpenApi';
@@ -18,12 +17,14 @@ import {GeneratorConfigInterface} from './GeneratorConfigInterface';
 // @ts-ignore
 import HelperOptions = Handlebars.HelperOptions;
 import {getTypeOfOpenApiSchemaType} from '../Util/OpenApi';
+import {isOpenApiReferenceObject, OpenApiReferenceObject} from "../Model/OpenApi/OpenApiReferenceObject";
+import {NoServiceGeneratorOptions} from "../Exception/NoServiceGeneratorOptions";
 
 /**
  * Generate the typescript files based on an openApi json.
  * FIXME: clean this mess in this class.
  */
-export class ServiceGenerator implements GeneratorInterface {
+export default class ServiceGenerator implements GeneratorInterface {
 	protected services: {[key: string]: ServiceData} = {};
 
 	/**
@@ -48,9 +49,9 @@ export class ServiceGenerator implements GeneratorInterface {
 						return writeFile(this.config.workingDir + data.name + '.ts' , content);
 					})
 					.then(() => {
-						console.log(chalk.bgGreen(`${data.name} written!`));
+						console.log(`${data.name} written!`);
 					}).catch((errno: any) => {
-						console.log(chalk.bgRed(`${data.name} failed!`));
+						console.log(`${data.name} failed!`);
 						console.log(errno);
 					});
 			});
@@ -96,8 +97,8 @@ export class ServiceGenerator implements GeneratorInterface {
 		return {
 			config: this.config,
 			name: this.getServiceName(route.length > 1 ? route : 'index'),
-			summary: pathItem.summary,
-			description: pathItem.description,
+			summary: pathItem.summary || '',
+			description: pathItem.description || '',
 			schemas,
 			routes
 		};
@@ -107,22 +108,21 @@ export class ServiceGenerator implements GeneratorInterface {
 	 * @param pathItem
 	 */
 	protected getPathItemRoutes(pathItem: OpenApiPathItemObject): {[route: string]: OpenApiOperationObject} {
-		const methods: {[name: string]: OpenApiOperationObject} = {
-			get: this.replaceTypes(pathItem.get),
-			put: this.replaceTypes(pathItem.put),
-			post: this.replaceTypes(pathItem.post),
-			delete: this.replaceTypes(pathItem.delete),
-			patch: this.replaceTypes(pathItem.patch),
-			options: this.replaceTypes(pathItem.options),
-			trace: this.replaceTypes(pathItem.trace)
-		};
+		const methods: {[name: string]: OpenApiOperationObject} = {};
 
 		// delete empty methods
-		_.forEach(methods, (value: OpenApiOperationObject, key: string) => {
-			if (value) {
+		_.forEach({
+			get: pathItem.get,
+			post: pathItem.post,
+			delete: pathItem.delete,
+			patch: pathItem.patch,
+			options: pathItem.options,
+			trace: pathItem.trace
+		}, (value: OpenApiOperationObject | undefined, key: string) => {
+			if (!value) {
 				return;
 			}
-			delete methods[key];
+			methods[key] = this.replaceTypes(value);
 		});
 
 		return methods;
@@ -136,7 +136,10 @@ export class ServiceGenerator implements GeneratorInterface {
 			return operation;
 		}
 
-		_.forEach(operation.parameters, (parameter: OpenApiParameterObject) => {
+		_.forEach(operation.parameters, (parameter: OpenApiParameterObject | OpenApiReferenceObject) => {
+			if (isOpenApiReferenceObject(parameter)){
+				return; // todo: what should I do with reference objects?
+			}
 			const schema: OpenApiSchemaObject = parameter.schema as OpenApiSchemaObject;
 			if (schema.type) {
 				// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
@@ -145,7 +148,10 @@ export class ServiceGenerator implements GeneratorInterface {
 			}
 		});
 
-		_.forEach(operation.responses, (response: OpenApiResponseObject) => {
+		_.forEach(operation.responses, (response: OpenApiResponseObject | OpenApiReferenceObject) => {
+			if (isOpenApiReferenceObject(response)){
+				return; // todo: what should I do with reference objects?
+			}
 			_.forEach(response.content, (mediaType: OpenApiMediaTypeObject) => {
 				const schema: OpenApiSchemaObject = mediaType.schema as OpenApiSchemaObject;
 				// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
@@ -186,7 +192,10 @@ export class ServiceGenerator implements GeneratorInterface {
 			if (!operation) {
 				return;
 			}
-			_.forEach(operation.responses, (response: OpenApiResponseObject) => {
+			_.forEach(operation.responses, (response: OpenApiResponseObject | OpenApiReferenceObject) => {
+				if (isOpenApiReferenceObject(response)){
+					return; // todo: what should I do with reference objects?
+				}
 				_.forEach(response.content, (mediaType: OpenApiMediaTypeObject) => {
 					const schema: OpenApiSchemaObject = mediaType.schema as OpenApiSchemaObject;
 					if (schema.type) {
@@ -234,6 +243,90 @@ export class ServiceGenerator implements GeneratorInterface {
 
 		return _.camelCase(serviceNameWithSpaces);
 	}
+
+	/**
+	 * @param openApi
+	 * @param config
+	 */
+	public static getInstance = (openApi: OpenApi, config: GeneratorConfigInterface): ServiceGenerator => {
+		const templateLoader = new HandlebarsTemplateLoader();
+		templateLoader.registerHelper('getAxiosResponseType', (operation: OpenApiOperationObject) => {
+			let responseType = 'object';
+			_.forEach(operation.responses, (response: OpenApiResponseObject | OpenApiReferenceObject, statusCode: string) => {
+				if (isOpenApiReferenceObject(response)){
+					return; // todo: what should I do with reference objects?
+				}
+				if (statusCode === '200') {
+					_.forEach(response.content, (mediaType: OpenApiMediaTypeObject, index: string) => {
+						if (index === 'application/json') {
+							const schema: OpenApiSchemaObject = mediaType.schema as OpenApiSchemaObject;
+							responseType = schema.type || 'any';
+						}
+					});
+				}
+			});
+			return responseType;
+		});
+		templateLoader.registerHelper('getParameters', (operation: OpenApiOperationObject) => {
+			const parameters: string[] = [];
+
+			const requestBody: OpenApiRequestBodyObject = operation.requestBody as OpenApiRequestBodyObject;
+			if (requestBody) {
+				_.forEach(requestBody.content, (mediaType: OpenApiMediaTypeObject, index: string) => {
+					if (index == 'application/json') {
+						const schema: OpenApiSchemaObject = mediaType.schema as OpenApiSchemaObject;
+						if (schema.type) {
+							parameters.push('data: ' + schema.type);
+						}
+					}
+				});
+			}
+
+			if (typeof operation.parameters != 'undefined') {
+				const sortedParameters = operation.parameters.sort((a, b) => {
+					// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+					//@ts-ignore
+					if (typeof a.required != 'undefined' && typeof b.requred != 'undefined') {
+						return -1;
+					}
+					// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+					//@ts-ignore
+					return (a.required && !b.required) ? -1 : 1;
+				});
+				_.forEach(sortedParameters, (parameter: OpenApiParameterObject | OpenApiReferenceObject) => {
+					if (isOpenApiReferenceObject(parameter)){
+						return; // todo: what should I do with reference objects?
+					}
+					const schema: OpenApiSchemaObject = parameter.schema as OpenApiSchemaObject;
+					parameters.push(_.camelCase(schema.title) + (!parameter.required ? '?' : '') + ': ' + schema.type);
+				});
+			}
+			parameters.push('config?: AxiosRequestConfig');
+			return parameters.join(', ');
+		});
+		templateLoader.registerHelper('getRoute', (operation: OpenApiOperationObject, helperOptions: HelperOptions) => {
+			if (!config.options) {
+				throw new NoServiceGeneratorOptions('Please provide options for service generator!');
+			}
+			let route = '${' + config.options.apiUrlConstant.constant + '}' + helperOptions.data._parent.key;
+			const queryParameters: string[] = [];
+			_.forEach(operation.parameters, (parameter: OpenApiParameterObject | OpenApiReferenceObject) => {
+				if (isOpenApiReferenceObject(parameter)){
+					return; // todo: what should I do with reference objects?
+				}
+				if (parameter.in === 'query') {
+					queryParameters.push(parameter.name + '=${' + _.camelCase(parameter.name) + '}');
+					return;
+				}
+				route = route.replace(`{${parameter.name}}`, '${' + _.camelCase(parameter.name) + '}');
+			});
+			if (queryParameters.length > 0) {
+				route += '?' + queryParameters.join('&');
+			}
+			return route;
+		});
+		return new ServiceGenerator(openApi, config, templateLoader);
+	}
 }
 
 
@@ -253,76 +346,4 @@ interface ServiceData {
 			[name: string]: OpenApiOperationObject;
 		};
 	};
-}
-
-/**
- * @param openApi
- * @param config
- */
-export const getInstance = (openApi: OpenApi, config: GeneratorConfigInterface): ServiceGenerator => {
-	const templateLoader = new HandlebarsTemplateLoader();
-	templateLoader.registerHelper('getAxiosResponseType', (operation: OpenApiOperationObject) => {
-		let responseType = 'object';
-		_.forEach(operation.responses, (response: OpenApiResponseObject, statusCode: string) => {
-			if (statusCode === '200') {
-				_.forEach(response.content, (mediaType: OpenApiMediaTypeObject, index: string) => {
-					if (index === 'application/json') {
-						const schema: OpenApiSchemaObject = mediaType.schema as OpenApiSchemaObject;
-						responseType = schema.type;
-					}
-				});
-			}
-		});
-		return responseType;
-	});
-	templateLoader.registerHelper('getParameters', (operation: OpenApiOperationObject) => {
-		const parameters: string[] = [];
-
-		const requestBody: OpenApiRequestBodyObject = operation.requestBody as OpenApiRequestBodyObject;
-		if (requestBody) {
-			_.forEach(requestBody.content, (mediaType: OpenApiMediaTypeObject, index: string) => {
-				if (index == 'application/json') {
-					const schema: OpenApiSchemaObject = mediaType.schema as OpenApiSchemaObject;
-					if (schema.type) {
-						parameters.push('data: ' + schema.type);
-					}
-				}
-			});
-		}
-
-		if (typeof operation.parameters != 'undefined') {
-			const sortedParameters = operation.parameters.sort((a, b) => {
-				// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-				//@ts-ignore
-				if (typeof a.required != 'undefined' && typeof b.requred != 'undefined') {
-					return -1;
-				}
-				// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-				//@ts-ignore
-				return (a.required && !b.required) ? -1 : 1;
-			});
-			_.forEach(sortedParameters, (parameter: OpenApiParameterObject) => {
-				const schema: OpenApiSchemaObject = parameter.schema as OpenApiSchemaObject;
-				parameters.push(_.camelCase(schema.title) + (!parameter.required ? '?' : '') + ': ' + schema.type);
-			});
-		}
-		parameters.push('config?: AxiosRequestConfig');
-		return parameters.join(', ');
-	});
-	templateLoader.registerHelper('getRoute', (operation: OpenApiOperationObject, helperOptions: HelperOptions) => {
-		let route = '${' + config.options.apiUrlConstant.constant + '}' + helperOptions.data._parent.key;
-		const queryParameters: string[] = [];
-		_.forEach(operation.parameters, (parameter: OpenApiParameterObject) => {
-			if (parameter.in === 'query') {
-				queryParameters.push(parameter.name + '=${' + _.camelCase(parameter.name) + '}');
-				return;
-			}
-			route = route.replace(`{${parameter.name}}`, '${' + _.camelCase(parameter.name) + '}');
-		});
-		if (queryParameters.length > 0) {
-			route += '?' + queryParameters.join('&');
-		}
-		return route;
-	});
-	return new ServiceGenerator(openApi, config, templateLoader);
 };
