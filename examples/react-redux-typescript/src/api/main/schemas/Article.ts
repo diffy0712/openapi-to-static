@@ -74,6 +74,13 @@ export interface Article {
     favorited: boolean;
 
     /**
+     * Awesomeness
+     *
+     * @var awesomeness boolean
+     */
+    awesomeness?: boolean;
+
+    /**
      * Favoritescount
      *
      * @var favoritesCount number
