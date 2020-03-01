@@ -24,7 +24,7 @@ export const {{name}} = {
 	 * {{summary}}{{#if description}}
 	 * {{description}}{{/if}}
 	 */
-	async {{camel_case summary}}: ({{getParameters .}}): Promise<AxiosResponse<{{getAxiosResponseType .}}>> => {
+	{{camel_case summary}}: async ({{getParameters .}}): Promise<AxiosResponse<{{getAxiosResponseType .}}>> => {
 		return Axios.{{@key}}<{{getAxiosResponseType .}}>(`{{{getRoute .}}}`{{#if requestBody}}, data{{/if}}, config);
 	},
 
