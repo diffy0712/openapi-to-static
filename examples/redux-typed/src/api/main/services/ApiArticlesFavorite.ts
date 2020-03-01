@@ -7,7 +7,7 @@
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 // @ts-ignore
-import Axios, {AxiosRequestConfig, AxiosResponse, AxiosRequestConfig} from 'axios';
+import Axios, {AxiosRequestConfig, AxiosResponse} from 'axios';
 import { ArticleInResponse } from '../schemas/ArticleInResponse';
 import { HttpValidationError } from '../schemas/HttpValidationError';
 import {SSO_API_URL} from '../../settings';
@@ -19,14 +19,14 @@ export const ApiArticlesFavorite = {
 	/**
 	 * Favorite Article
 	 */
-	favoriteArticle: (slug: string, authorization: string, config?: AxiosRequestConfig): Promise<AxiosResponse<ArticleInResponse>> => {
+	favoriteArticle: async (slug: string, authorization: string, config?: AxiosRequestConfig): Promise<AxiosResponse<ArticleInResponse>> => {
 		return Axios.post<ArticleInResponse>(`${SSO_API_URL}/api/articles/${slug}/favorite`, config);
 	},
 
 	/**
 	 * Delete Article From Favorites
 	 */
-	deleteArticleFromFavorites: (slug: string, authorization: string, config?: AxiosRequestConfig): Promise<AxiosResponse<ArticleInResponse>> => {
+	deleteArticleFromFavorites: async (slug: string, authorization: string, config?: AxiosRequestConfig): Promise<AxiosResponse<ArticleInResponse>> => {
 		return Axios.delete<ArticleInResponse>(`${SSO_API_URL}/api/articles/${slug}/favorite`, config);
 	},
 

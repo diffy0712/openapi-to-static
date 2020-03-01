@@ -21,7 +21,7 @@ export const ApiArticles = {
 	/**
 	 * Get Articles
 	 */
-	getArticles: (tag?: string, author?: string, favorited?: string, limit?: number, offset?: number, authorization?: string, config?: AxiosRequestConfig): Promise<AxiosResponse<ManyArticlesInResponse>> => {
+	getArticles: async (tag?: string, author?: string, favorited?: string, limit?: number, offset?: number, authorization?: string, config?: AxiosRequestConfig): Promise<AxiosResponse<ManyArticlesInResponse>> => {
 		return Axios.get<ManyArticlesInResponse>(`${SSO_API_URL}/api/articles?tag=${tag}&author=${author}&favorited=${favorited}&limit=${limit}&offset=${offset}`, config);
 	},
 
@@ -35,15 +35,15 @@ export const ApiArticles = {
 	/**
 	 * Get Article
 	 */
-	getArticle: (slug: string, authorization?: string, config?: AxiosRequestConfig): Promise<AxiosResponse<ArticleInResponse>> => {
+	getArticle: async (slug: string, authorization?: string, config?: AxiosRequestConfig): Promise<AxiosResponse<ArticleInResponse>> => {
 		return Axios.get<ArticleInResponse>(`${SSO_API_URL}/api/articles/${slug}`, config);
 	},
 
 	/**
 	 * Delete Article
 	 */
-	deleteArticle: (slug: string, authorization: string, config?: AxiosRequestConfig): Promise<AxiosResponse<object>> => {
-		return Axios.delete<object>(`${SSO_API_URL}/api/articles/${slug}`, config);
+	deleteArticle: async (slug: string, authorization: string, config?: AxiosRequestConfig): Promise<AxiosResponse<ArticleInResponse>> => {
+		return Axios.delete<ArticleInResponse>(`${SSO_API_URL}/api/articles/${slug}`, config);
 	},
 
 };

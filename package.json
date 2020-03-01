@@ -1,6 +1,6 @@
 {
   "name": "openapi-typescript-sync",
-  "version": "0.1.3",
+  "version": "0.1.5",
   "description": "Generate static typescript files from openapi.json! ",
   "repository": "https://gitlab.com/diffy0712/openapi-ts-sync",
   "scripts": {

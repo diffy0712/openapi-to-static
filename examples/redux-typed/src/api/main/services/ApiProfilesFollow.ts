@@ -7,7 +7,7 @@
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 // @ts-ignore
-import Axios, {AxiosRequestConfig, AxiosResponse, AxiosRequestConfig} from 'axios';
+import Axios, {AxiosRequestConfig, AxiosResponse} from 'axios';
 import { ProfileInResponse } from '../schemas/ProfileInResponse';
 import { HttpValidationError } from '../schemas/HttpValidationError';
 import {SSO_API_URL} from '../../settings';
@@ -19,14 +19,14 @@ export const ApiProfilesFollow = {
 	/**
 	 * Follow User
 	 */
-	followUser: (username: string, authorization: string, config?: AxiosRequestConfig): Promise<AxiosResponse<ProfileInResponse>> => {
+	followUser: async (username: string, authorization: string, config?: AxiosRequestConfig): Promise<AxiosResponse<ProfileInResponse>> => {
 		return Axios.post<ProfileInResponse>(`${SSO_API_URL}/api/profiles/${username}/follow`, config);
 	},
 
 	/**
 	 * Describe From User
 	 */
-	describeFromUser: (username: string, authorization: string, config?: AxiosRequestConfig): Promise<AxiosResponse<ProfileInResponse>> => {
+	describeFromUser: async (username: string, authorization: string, config?: AxiosRequestConfig): Promise<AxiosResponse<ProfileInResponse>> => {
 		return Axios.delete<ProfileInResponse>(`${SSO_API_URL}/api/profiles/${username}/follow`, config);
 	},
 

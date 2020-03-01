@@ -7,7 +7,7 @@
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 // @ts-ignore
-import Axios, {AxiosRequestConfig, AxiosResponse, AxiosRequestConfig} from 'axios';
+import Axios, {AxiosRequestConfig, AxiosResponse} from 'axios';
 import { ManyCommentsInResponse } from '../schemas/ManyCommentsInResponse';
 import { HttpValidationError } from '../schemas/HttpValidationError';
 import { CommentInResponse } from '../schemas/CommentInResponse';
@@ -21,21 +21,21 @@ export const ApiArticlesComments = {
 	/**
 	 * Get Comment From Article
 	 */
-	getCommentFromArticle: (slug: string, authorization?: string, config?: AxiosRequestConfig): Promise<AxiosResponse<ManyCommentsInResponse>> => {
+	getCommentFromArticle: async (slug: string, authorization?: string, config?: AxiosRequestConfig): Promise<AxiosResponse<ManyCommentsInResponse>> => {
 		return Axios.get<ManyCommentsInResponse>(`${SSO_API_URL}/api/articles/${slug}/comments`, config);
 	},
 
 	/**
 	 * Create Comment For Article
 	 */
-	createCommentForArticle: (data: BodyCreateCommentForArticle, slug: string, authorization: string, config?: AxiosRequestConfig): Promise<AxiosResponse<object>> => {
+	createCommentForArticle: async (data: BodyCreateCommentForArticle, slug: string, authorization: string, config?: AxiosRequestConfig): Promise<AxiosResponse<object>> => {
 		return Axios.post<object>(`${SSO_API_URL}/api/articles/${slug}/comments`, data, config);
 	},
 
 	/**
 	 * Delete Comment From Article
 	 */
-	deleteCommentFromArticle: (slug: string, id: number, authorization: string, config?: AxiosRequestConfig): Promise<AxiosResponse<object>> => {
+	deleteCommentFromArticle: async (slug: string, id: number, authorization: string, config?: AxiosRequestConfig): Promise<AxiosResponse<object>> => {
 		return Axios.delete<object>(`${SSO_API_URL}/api/articles/${slug}/comments/${id}`, config);
 	},
 
