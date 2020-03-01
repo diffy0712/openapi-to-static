@@ -1,0 +1,28 @@
+[
+  {
+    "name": "main",
+    "path": "http://localhost:8000/openapi.json",
+    "proxies": [
+      "http://localhost:8001/openapi.json"
+    ],
+    "debug": true,
+    "generators": [
+      {
+        "type": "./Generator/SchemaGenerator",
+        "workingDir": "./api/main/schemas/",
+        "template": "./templates/schemaInterface.handlebars"
+      },
+      {
+        "type": "./Generator/ServiceGenerator",
+        "workingDir": "./api/main/services/",
+        "template": "./templates/serviceFunctions.handlebars",
+        "options" : {
+          "apiUrlConstant": {
+            "constant": "SSO_API_URL",
+            "import": "import {SSO_API_URL} from '../../settings';"
+          }
+        }
+      }
+    ]
+  }
+]
