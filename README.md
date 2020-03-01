@@ -20,6 +20,11 @@ and available remote endpoints.
 $ npm install openapi-typescript-sync --save-dev
 ```
 
+# Todo
+- [ ] write tests
+- [ ] add header parameters as header parameters, now the authorization
+      must be placed as a parameter, which does nothing and as AxiosRequestOptions.
+
 # Command
 ```
 $ npm run bin/openapi-typescript-sync --schema-dir={{ schema-dir }} --route-dir={{ route-dir }}
