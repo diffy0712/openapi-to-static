@@ -2,8 +2,8 @@
  * @param schema
  */
 import {OpenApiSchemaObject} from '../Model/OpenApi/OpenApiSchemaObject';
-import {isOpenApiReferenceObject, OpenApiReferenceObject} from "../Model/OpenApi/OpenApiReferenceObject";
-import * as _ from "lodash";
+import {isOpenApiReferenceObject, OpenApiReferenceObject} from '../Model/OpenApi/OpenApiReferenceObject';
+import * as _ from 'lodash';
 
 
 /**
@@ -11,7 +11,8 @@ import * as _ from "lodash";
  */
 export const getObjectNameFrom$ref = ($ref: string): string => {
 	const refTypes = $ref.split('/');
-	return refTypes[3];
+	const refTypeName = _.camelCase(refTypes[3]);
+	return refTypeName.charAt(0).toUpperCase() + refTypeName.slice(1);
 };
 
 
@@ -74,7 +75,7 @@ export const getReferencedSchemas = (schema: OpenApiSchemaObject | OpenApiRefere
 /**
  * @param schema
  */
-export const getTypeOfOpenApiSchemaType = (schema: OpenApiSchemaObject): string => {
+export const getTypeOfOpenApiSchemaType = (schema: OpenApiSchemaObject| OpenApiReferenceObject): string => {
 	switch (schema.type) {
 	case 'array':
 		// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
@@ -106,5 +107,5 @@ export const getTypeOfOpenApiSchemaType = (schema: OpenApiSchemaObject): string 
 		return 'void';
 	}
 
-	return _.camelCase(schema.type);
+	return schema.type;
 };

@@ -11,6 +11,8 @@ export interface OpenApiReferenceObject {
 	 * REQUIRED. The reference string.
 	 */
 	$ref: string;
+
+	type: string;
 }
 
 /**
