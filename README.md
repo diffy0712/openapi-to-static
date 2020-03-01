@@ -17,7 +17,7 @@ and available remote endpoints.
 
 # Installation
 ```
-$ npm install openapi-typescript-sync
+$ npm install openapi-typescript-sync --save-dev
 ```
 
 # Command
