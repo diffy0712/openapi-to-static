@@ -29,10 +29,11 @@ export default class SchemaGenerator implements GeneratorInterface {
 			const templatePath = this.config.template;
 			if (this.openApi.components) {
 				_.forEach(this.openApi.components.schemas, async (schema: OpenApiSchemaObject | OpenApiReferenceObject) => {
-					if (isOpenApiReferenceObject(schema)){
+					if (isOpenApiReferenceObject(schema) || !schema.title){
 						return; // todo: what should I do with reference objects?
 					}
 					schema.title = _.camelCase(schema.title);
+					schema.title = schema.title.charAt(0).toUpperCase() + schema.title.slice(1);
 					const schemaData: SchemaData = this.getSchemaData(schema);
 
 					// console.log(schemaData);
@@ -62,9 +63,6 @@ export default class SchemaGenerator implements GeneratorInterface {
 		const schemas = getReferencedSchemas(openApi);
 		const data = openApi;
 		_.forEach(data.properties, (schema: OpenApiSchemaObject | OpenApiReferenceObject) => {
-			if (isOpenApiReferenceObject(schema)){
-				return; // todo: what should I do with reference objects?
-			}
 			// override the type so we get the correct typescript interface.
 			schema.type = getTypeOfOpenApiSchemaType(schema);
 		});
