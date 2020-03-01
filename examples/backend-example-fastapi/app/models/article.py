@@ -25,6 +25,7 @@ class ArticleBase(RWModel):
 class Article(DateTimeModelMixin, ArticleBase):
     slug: str
     author: Profile
+    awesomeness: bool = True
     favorited: bool
     favorites_count: int = Schema(..., alias="favoritesCount")
 
