@@ -7,7 +7,7 @@
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 // @ts-ignore
-import Axios, {AxiosRequestConfig, AxiosResponse, AxiosRequestConfig} from 'axios';
+import Axios, {AxiosRequestConfig, AxiosResponse} from 'axios';
 import { ProfileInResponse } from '../schemas/ProfileInResponse';
 import { HttpValidationError } from '../schemas/HttpValidationError';
 import {SSO_API_URL} from '../../settings';
@@ -19,7 +19,7 @@ export const ApiProfiles = {
 	/**
 	 * Retrieve Profile
 	 */
-	retrieveProfile: (username: string, authorization?: string, config?: AxiosRequestConfig): Promise<AxiosResponse<ProfileInResponse>> => {
+	retrieveProfile: async (username: string, authorization?: string, config?: AxiosRequestConfig): Promise<AxiosResponse<ProfileInResponse>> => {
 		return Axios.get<ProfileInResponse>(`${SSO_API_URL}/api/profiles/${username}`, config);
 	},
 

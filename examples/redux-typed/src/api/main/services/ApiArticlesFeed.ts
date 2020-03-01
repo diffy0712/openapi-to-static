@@ -7,7 +7,7 @@
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 // @ts-ignore
-import Axios, {AxiosRequestConfig, AxiosResponse, AxiosRequestConfig} from 'axios';
+import Axios, {AxiosRequestConfig, AxiosResponse} from 'axios';
 import { ManyArticlesInResponse } from '../schemas/ManyArticlesInResponse';
 import { HttpValidationError } from '../schemas/HttpValidationError';
 import {SSO_API_URL} from '../../settings';
@@ -19,7 +19,7 @@ export const ApiArticlesFeed = {
 	/**
 	 * Articles Feed
 	 */
-	articlesFeed: (authorization: string, limit?: number, offset?: number, config?: AxiosRequestConfig): Promise<AxiosResponse<ManyArticlesInResponse>> => {
+	articlesFeed: async (authorization: string, limit?: number, offset?: number, config?: AxiosRequestConfig): Promise<AxiosResponse<ManyArticlesInResponse>> => {
 		return Axios.get<ManyArticlesInResponse>(`${SSO_API_URL}/api/articles/feed?limit=${limit}&offset=${offset}`, config);
 	},
 

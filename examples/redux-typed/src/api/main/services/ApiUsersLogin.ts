@@ -7,7 +7,7 @@
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 // @ts-ignore
-import Axios, {AxiosRequestConfig, AxiosResponse, AxiosRequestConfig} from 'axios';
+import Axios, {AxiosRequestConfig, AxiosResponse} from 'axios';
 import { UserInResponse } from '../schemas/UserInResponse';
 import { HttpValidationError } from '../schemas/HttpValidationError';
 import { BodyLogin } from '../schemas/BodyLogin';
@@ -20,7 +20,7 @@ export const ApiUsersLogin = {
 	/**
 	 * Login
 	 */
-	login: (data: BodyLogin, config?: AxiosRequestConfig): Promise<AxiosResponse<UserInResponse>> => {
+	login: async (data: BodyLogin, config?: AxiosRequestConfig): Promise<AxiosResponse<UserInResponse>> => {
 		return Axios.post<UserInResponse>(`${SSO_API_URL}/api/users/login`, data, config);
 	},
 
