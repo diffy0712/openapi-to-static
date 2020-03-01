@@ -1,6 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 // @ts-ignore
-import * as chalk from 'chalk';
 import * as _ from 'lodash';
 import GeneratorInterface from './GeneratorInterface';
 import {OpenApiSchemaObject} from '../Model/OpenApi/OpenApiSchemaObject';
@@ -10,11 +9,12 @@ import {OpenApi} from '../Model/OpenApi/OpenApi';
 import {GeneratorConfigInterface} from './GeneratorConfigInterface';
 import {HandlebarsTemplateLoader} from '../Loader/Template/HandlebarsTemplateLoader';
 import {TemplateLoaderInterface} from '../Loader/Template/TemplateLoaderInterface';
+import {isOpenApiReferenceObject, OpenApiReferenceObject} from "../Model/OpenApi/OpenApiReferenceObject";
 
 /**
  * Generate the typescript files based on an openApi json.
  */
-export class SchemaGenerator implements GeneratorInterface {
+export default class SchemaGenerator implements GeneratorInterface {
 	/**
 	 * @param openApi
 	 * @param config
@@ -27,24 +27,29 @@ export class SchemaGenerator implements GeneratorInterface {
 			// create the model and enum templates.
 			// save them into files
 			const templatePath = this.config.template;
-			_.forEach(this.openApi.components.schemas, async (schema: OpenApiSchemaObject) => {
-				const schemaData: SchemaData = this.getSchemaData(schema);
+			if (this.openApi.components) {
+				_.forEach(this.openApi.components.schemas, async (schema: OpenApiSchemaObject | OpenApiReferenceObject) => {
+					if (isOpenApiReferenceObject(schema)){
+						return; // todo: what should I do with reference objects?
+					}
+					const schemaData: SchemaData = this.getSchemaData(schema);
 
-				// console.log(schemaData);
-				console.log(chalk.blue(`Rendering ${schema.title}...`));
-				await this.templateLoader.load(templatePath, schemaData)
-					.then((content: string) => {
-						console.log(chalk.bgBlue(`${schema.title} rendered!`));
-						console.log(chalk.green(`Writing ${schema.title}...`));
-						return writeFile(this.config.workingDir + schema.title + '.ts' , content);
-					})
-					.then(() => {
-						console.log(chalk.bgGreen(`${schema.title} written!`));
-					}).catch((errno: any) => {
-						console.log(chalk.bgRed(`${schema.title} failed!`));
-						console.log(errno);
-					});
-			});
+					// console.log(schemaData);
+					console.log(`Rendering ${schema.title}...`);
+					await this.templateLoader.load(templatePath, schemaData)
+						.then((content: string) => {
+							console.log(`${schema.title} rendered!`);
+							console.log(`Writing ${schema.title}...`);
+							return writeFile(this.config.workingDir + schema.title + '.ts' , content);
+						})
+						.then(() => {
+							console.log(`${schema.title} written!`);
+						}).catch((errno: any) => {
+							console.log(`${schema.title} failed!`);
+							console.log(errno);
+						});
+				});
+			}
 		});
 
 	}
@@ -55,14 +60,26 @@ export class SchemaGenerator implements GeneratorInterface {
 	protected getSchemaData(openApi: OpenApiSchemaObject): SchemaData {
 		const schemas = getReferencedSchemas(openApi);
 		const data = openApi;
-		_.forEach(data.properties, (value: OpenApiSchemaObject) => {
+		_.forEach(data.properties, (schema: OpenApiSchemaObject | OpenApiReferenceObject) => {
+			if (isOpenApiReferenceObject(schema)){
+				return; // todo: what should I do with reference objects?
+			}
 			// override the type so we get the correct typescript interface.
-			value.type = getTypeOfOpenApiSchemaType(value);
+			schema.type = getTypeOfOpenApiSchemaType(schema);
 		});
 		return {
 			data,
 			schemas
 		};
+	}
+
+	/**
+	 * @param openApi
+	 * @param config
+	 */
+	public static getInstance(openApi: OpenApi, config: GeneratorConfigInterface): SchemaGenerator {
+		const templateLoader = new HandlebarsTemplateLoader();
+		return new SchemaGenerator(openApi, config, templateLoader);
 	}
 }
 
@@ -76,13 +93,4 @@ interface SchemaData {
 	 *
 	 */
 	data: OpenApiSchemaObject;
-}
-
-/**
- * @param openApi
- * @param config
- */
-export const getInstance = (openApi: OpenApi, config: GeneratorConfigInterface): SchemaGenerator => {
-	const templateLoader = new HandlebarsTemplateLoader();
-	return new SchemaGenerator(openApi, config, templateLoader);
 };

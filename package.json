@@ -1,7 +1,8 @@
 {
   "name": "openapi-typescript-sync",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Generate static typescript files from openapi.json! ",
+  "repository": "https://gitlab.com/diffy0712/openapi-ts-sync",
   "scripts": {
     "lint": "yarn eslint . --ext .js,.jsx,.ts,.tsx"
   },
@@ -15,21 +16,27 @@
   "author": "Ferencz Dávid <ferencz.david@protonmail.com>",
   "license": "MIT",
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^2.20.0",
-    "@typescript-eslint/parser": "^2.20.0",
-    "eslint": "^6.8.0",
-    "ts-node": "^8.6.2",
-    "typescript": "^3.8.2",
     "@types/axios": "^0.14.0",
-    "@types/chalk": "^2.2.0",
     "@types/lodash": "^4.14.149",
     "@types/node": "^13.7.4",
     "@types/node-fetch": "^2.5.4",
+    "@typescript-eslint/eslint-plugin": "^2.20.0",
+    "@typescript-eslint/parser": "^2.20.0",
     "axios": "^0.19.2",
-    "chalk": "^3.0.0",
+    "eslint": "^6.8.0",
     "handlebars": "^4.7.3",
     "lodash": "^4.17.15",
-    "node-fetch": "^2.6.0"
+    "node-fetch": "^2.6.0",
+    "ts-loader": "^6.2.1",
+    "typescript": "^3.8.3"
   },
-  "dependencies": {}
+  "dependencies": {},
+  "files": [
+    "README.md",
+    "LICENSE",
+    "package.json",
+    "dist/**/*",
+    "lib/**/*",
+    "templates/**/*"
+  ]
 }

@@ -54,7 +54,7 @@ export interface OpenApiResponsesObject {
 	 * Use this field to cover undeclared responses.
 	 * A Reference Object can link to a response that the OpenAPI Object's components/responses section defines.
 	 */
-	default?: OpenApiResponseObject | OpenApiReferenceObject;
+	default: OpenApiResponseObject | OpenApiReferenceObject;
 
 	/**
 	 * Any HTTP status code can be used as the property name, but only one property per code, to describe

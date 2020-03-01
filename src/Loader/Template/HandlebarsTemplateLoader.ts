@@ -20,7 +20,8 @@ export class HandlebarsTemplateLoader implements TemplateLoaderInterface {
 	public async load(path: string, data: object): Promise<string> {
 		return loadFile(path)
 			.then((content: string) => {
-				handlebars.registerHelper('in_array', function(property: string, arr: string[], options?: handlebars.HelperOptions) {
+				handlebars.registerHelper('in_array', function(property: string, arr: string[], options: handlebars.HelperOptions) {
+					// @ts-ignore
 					return typeof arr != 'undefined' && !(arr.find(value => value === property)) ? options.fn(this) : '';
 				});
 				handlebars.registerHelper('camel_case', function(value: string) {

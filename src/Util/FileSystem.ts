@@ -1,5 +1,7 @@
-import * as fs from 'fs';
+import fs from "fs";
 import ErrnoException = NodeJS.ErrnoException;
+
+
 
 /**
  * Load a file and return as a promise.
