@@ -32,6 +32,7 @@ export default class SchemaGenerator implements GeneratorInterface {
 					if (isOpenApiReferenceObject(schema)){
 						return; // todo: what should I do with reference objects?
 					}
+					schema.title = _.camelCase(schema.title);
 					const schemaData: SchemaData = this.getSchemaData(schema);
 
 					// console.log(schemaData);
@@ -93,4 +94,4 @@ interface SchemaData {
 	 *
 	 */
 	data: OpenApiSchemaObject;
-};
+}
