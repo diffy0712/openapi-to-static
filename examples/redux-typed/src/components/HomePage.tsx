@@ -33,7 +33,7 @@ export class HomePagePage extends React.Component<Props, HomePageState> {
 		return (
 			<div>
 				<h1>Article Page</h1>
-				<button onClick={() => this.onCreate({article: {title: 'test2', description: 'asdd', body: 'bodyad', tagList: []}})}/>
+				<button onClick={() => this.onCreate({article: {title: Math.random().toString(), description: 'asdd', body: 'bodyad', tagList: []}})}/>
 				<div>
 					{articles.map(article => (
 						<div>

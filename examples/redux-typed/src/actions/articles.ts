@@ -33,7 +33,7 @@ export const setArticles = (articles: Article[]): AppActions => ({
 
 export const startAddArticle = (articleData: BodyCreateNewArticle) => {
 	return async (dispatch: Dispatch<AppActions>, getState: () => AppState): Promise<ArticleActionTypes> => {
-		const token = 'Token eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJleHAiOjE1ODM3MDY4MTMsInN1YiI6ImFjY2VzcyJ9.TsdJFfMqzrnpwjkS-IEGgN53uTuvsURYA4i8oqFwIvw';
+		const token = 'Token eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJleHAiOjE1ODM3NTE5ODQsInN1YiI6ImFjY2VzcyJ9.1vVcJSZ1pSq44s9FF6zxMAXFIyjsSSPHrVCMW8zQJEQ';
 		const createNewArticleResponse = await ApiArticles.createNewArticle(articleData, token, {headers: {Authorization: token}});
 		const article = createNewArticleResponse.data.article;
 		const id = (Math.random() * Math.random()).toString();
