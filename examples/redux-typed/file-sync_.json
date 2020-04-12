@@ -1,0 +1,12 @@
+{
+  "main-openapi-schemas" : {
+    "generator": "../../../OpenApiSync/src/Generator/Typescript/SchemaGenerator",
+    "outDir": "./examples/redux-typed/src/api/main/schemas/",
+    "outFileName": "{schema.title}.schema.ts",
+    "template": "./src/OpenApiSync/templates/typescript/schemaInterface.handlebars",
+    "options": {
+      "path": "https://api2-stg.secberus.com/openapi.json",
+      "bundled": true
+    }
+  }
+}

@@ -1,0 +1,33 @@
+# To generate figma icons as svg
+figma-svg-icons :
+  path: "http://localhost:8081/figma.json"
+  generator: "./Generator/IconGenerator"
+  outDir: "./examples/redux-typed/src/assets/icons/"
+  outFileName: "si.svg"
+  template: "./templates/svg/font.handlebars"
+# To generate a sass file containing all the variables used in figma
+figma-variables :
+  path: "http://localhost:8081/figma.json"
+  generator: "./Generator/VariableGenerator"
+  outDir: "./examples/redux-typed/src/assets/scss/"
+  outFileName: "_variables.sass"
+  template: "./templates/sass/variables.handlebars"
+# To generate response and request schemas of a rest api having openapi documentation
+main-openapi-schemas :
+  path: "http://localhost:8081/openapi.json"
+  generator: "./Generator/SchemaGenerator"
+  outDir: "./examples/redux-typed/src/api/main/schemas/"
+  outFileName: "{schema.title}.schema.ts"
+  template: "./templates/schemaInterface.handlebars"
+# To generate the service layer to access the endpoints of a rest api having openapi documentation
+main-openapi-services :
+  path: "http://localhost:8081/openapi.json"
+  generator: "./Generator/ServiceGenerator"
+  outDir: "./examples/redux-typed/src/api/main/services/"
+  outFileName: "data.name.service.ts"
+  template: "./templates/serviceFunctions.handlebars"
+  options :
+    imports: [
+      "import SSO_API_URL from '../../settings';"
+    ]
+    apiUrlConstant: "SSO_API_URL"

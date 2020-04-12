@@ -4,8 +4,9 @@
   "description": "Generate static typescript files from openapi.json! ",
   "repository": "https://gitlab.com/diffy0712/openapi-ts-sync",
   "scripts": {
-    "api-sync": "node ./lib/index.js --config=openapi-ts-sync.json",
+    "file-sync": "node ./lib/index.js --config=file-sync.json",
     "build": "node node_modules/.bin/tsc",
+    "run": "rm -R lib && node node_modules/.bin/tsc && node ./lib/FileSync/src/Cli/index.js --config=examples/redux-typed/file-sync_.json",
     "lint": "yarn eslint . --ext .js,.jsx,.ts,.tsx"
   },
   "keywords": [
@@ -18,19 +19,27 @@
   "author": "Ferencz Dávid <ferencz.david@protonmail.com>",
   "license": "MIT",
   "devDependencies": {
-    "@types/axios": "^0.14.0",
-    "@types/lodash": "^4.14.149",
-    "@types/node": "^13.7.4",
-    "@types/node-fetch": "^2.5.4",
     "@typescript-eslint/eslint-plugin": "^2.20.0",
     "@typescript-eslint/parser": "^2.20.0",
-    "axios": "^0.19.2",
     "eslint": "^6.8.0",
-    "handlebars": "^4.7.3",
-    "lodash": "^4.17.15",
-    "node-fetch": "^2.6.0",
     "ts-loader": "^6.2.1",
     "typescript": "^3.8.3"
+  },
+  "dependencies": {
+    "@types/chalk": "^2.2.0",
+    "@types/handlebars": "^4.1.0",
+    "@types/lodash": "^4.14.149",
+    "@types/node": "^13.9.1",
+    "@types/node-fetch": "^2.5.5",
+    "@types/ora": "^3.2.0",
+    "@typescript-eslint/eslint-plugin": "^2.20.0",
+    "@typescript-eslint/parser": "^2.20.0",
+    "cliui": "^6.0.0",
+    "eslint": "^6.8.0",
+    "node-fetch": "^2.6.0",
+    "ora": "^4.0.3",
+    "ste-events": "^1.6.8",
+    "strongly-typed-events": "^1.6.8"
   },
   "files": [
     "README.md",

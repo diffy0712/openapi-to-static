@@ -1,0 +1,47 @@
+{
+  "figma-icons" : {
+    "generator": "./Generator/IconGenerator",
+    "outDir": "./examples/redux-typed/src/assets/icons/",
+    "outFileName": "si.svg",
+    "template": "./templates/svg/font.handlebars",
+    "options": {
+      "path": "http://localhost:8081/figma.json",
+      "bundled": true
+    }
+  },
+  "figma-variables" : {
+    "generator": "./Generator/VariableGenerator",
+    "outDir": "./examples/redux-typed/src/assets/scss/",
+    "outFileName": "_variables.sass",
+    "template": "./templates/sass/variables.handlebars",
+    "options": {
+      "path": "http://localhost:8081/figma.json",
+      "bundled": true
+    }
+  },
+
+  "main-openapi-schemas" : {
+    "generator": "./Generator/SchemaGenerator",
+    "outDir": "./examples/redux-typed/src/api/main/schemas/",
+    "outFileName": "{schema.title}.schema.ts",
+    "template": "./templates/schemaInterface.handlebars",
+    "options": {
+      "path": "http://localhost:8081/openapi.json",
+      "bundled": true
+    }
+  },
+  "main-openapi-services" : {
+    "generator": "./Generator/ServiceGenerator",
+    "outDir": "./examples/redux-typed/src/api/main/services/",
+    "outFileName": "{data.name}.service.ts",
+    "template": "./templates/serviceFunctions.handlebars",
+    "options" : {
+      "imports": [
+        "import {SSO_API_URL} from '../../settings';"
+      ],
+      "apiUrlConstant": "SSO_API_URL",
+      "path": "http://localhost:8081/openapi.json",
+      "bundled": true
+    }
+  }
+}

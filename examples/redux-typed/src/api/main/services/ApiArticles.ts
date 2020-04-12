@@ -28,8 +28,8 @@ export const ApiArticles = {
 	/**
 	 * Create New Article
 	 */
-	createNewArticle: async (data: BodyCreateNewArticle, authorization: string, config?: AxiosRequestConfig): Promise<AxiosResponse<ArticleInResponse>> => {
-		return Axios.post<ArticleInResponse>(`${SSO_API_URL}/api/articles`, data, config);
+	createNewArticle: async (data: BodyCreateNewArticle, authorization: string, config?: AxiosRequestConfig): Promise<AxiosResponse<object>> => {
+		return Axios.post<object>(`${SSO_API_URL}/api/articles`, data, config);
 	},
 
 	/**
@@ -42,8 +42,8 @@ export const ApiArticles = {
 	/**
 	 * Delete Article
 	 */
-	deleteArticle: async (slug: string, authorization: string, config?: AxiosRequestConfig): Promise<AxiosResponse<ArticleInResponse>> => {
-		return Axios.delete<ArticleInResponse>(`${SSO_API_URL}/api/articles/${slug}`, config);
+	deleteArticle: async (slug: string, authorization: string, config?: AxiosRequestConfig): Promise<AxiosResponse<object>> => {
+		return Axios.delete<object>(`${SSO_API_URL}/api/articles/${slug}`, config);
 	},
 
 };
