@@ -8,6 +8,10 @@ import { AppActions } from '../types/actions';
 import { ThunkDispatch } from 'redux-thunk';
 import {BodyCreateNewArticle} from '../api/main/schemas/BodyCreateNewArticle';
 
+import {Grid, Box, ButtonPrimary, Heading} from '@primer/components';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCoffee } from '@fortawesome/free-solid-svg-icons'
+
 interface HomePageProps {
 	id?: string;
 	color?: string;
@@ -19,35 +23,42 @@ interface HomePageState {}
 type Props = HomePageProps & LinkStateProps & LinkDispatchProps;
 
 export class HomePagePage extends React.Component<Props, HomePageState> {
-	onCreate = (article: BodyCreateNewArticle) => {
+	onCreate = (article: BodyCreateNewArticle): void => {
 		this.props.startCreateArticle(article);
 	};
-	onEdit = (article: Article) => {
+	onEdit = (article: Article): void => {
 		this.props.startEditArticle(article);
 	};
-	onRemove = (id: string) => {
+	onRemove = (id: string): void => {
 		this.props.startRemoveArticle(id);
 	};
 	render(): object {
 		const { articles } = this.props;
 		return (
-			<div>
-				<h1>Article Page</h1>
-				<button onClick={() => this.onCreate({article: {title: 'test2', description: 'asdd', body: 'bodyad', tagList: []}})}/>
-				<div>
-					{articles.map(article => (
-						<div>
-							<p>{article.title}</p>
-							<p>{article.description}</p>
-							<p>{article.body}</p>
-							<button onClick={() => this.onRemove(article.id)}>
-								Remove Article
-							</button>
-							<button onClick={() => this.onEdit(article)}>Edit Article</button>
-						</div>
-					))}
-				</div>
-			</div>
+			<Grid gridTemplateColumns="repeat(2, auto)" gridGap={3}>
+				<Box p={3} bg="blue.2">
+					<Heading fontSize={6} mb={2}>Article Page</Heading>
+					<ButtonPrimary
+						onClick={(): void => this.onCreate({article: {title: 'test2', description: 'asdd', body: 'bodyad', tagList: []}})}
+					>
+						<FontAwesomeIcon icon={faCoffee} /> Create article
+					</ButtonPrimary>
+					<div>
+						{articles.map(article => (
+							<div>
+								<p>{article.title}</p>
+								<p>{article.description}</p>
+								<p>{article.body}</p>
+								<button onClick={() => this.onRemove(article.id)}>
+									Remove Article
+								</button>
+								<button onClick={() => this.onEdit(article)}>Edit Article</button>
+							</div>
+						))}
+					</div>
+				</Box>
+				<Box p={3} bg="yellow.2">2</Box>
+			</Grid>
 		);
 	}
 }

@@ -17,18 +17,20 @@
   ],
   "author": "Ferencz Dávid <ferencz.david@protonmail.com>",
   "license": "MIT",
-  "devDependencies": {
+  "dependencies": {
     "@types/axios": "^0.14.0",
     "@types/lodash": "^4.14.149",
     "@types/node": "^13.7.4",
     "@types/node-fetch": "^2.5.4",
-    "@typescript-eslint/eslint-plugin": "^2.20.0",
-    "@typescript-eslint/parser": "^2.20.0",
     "axios": "^0.19.2",
-    "eslint": "^6.8.0",
     "handlebars": "^4.7.3",
     "lodash": "^4.17.15",
-    "node-fetch": "^2.6.0",
+    "node-fetch": "^2.6.0"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^2.20.0",
+    "@typescript-eslint/parser": "^2.20.0",
+    "eslint": "^6.8.0",
     "ts-loader": "^6.2.1",
     "typescript": "^3.8.3"
   },

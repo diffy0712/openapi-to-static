@@ -35,7 +35,7 @@ export const startAddArticle = (articleData: BodyCreateNewArticle) => {
 	return async (dispatch: Dispatch<AppActions>, getState: () => AppState): Promise<ArticleActionTypes> => {
 		const token = 'Token eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJleHAiOjE1ODM3MDY4MTMsInN1YiI6ImFjY2VzcyJ9.TsdJFfMqzrnpwjkS-IEGgN53uTuvsURYA4i8oqFwIvw';
 		const createNewArticleResponse = await ApiArticles.createNewArticle(articleData, token, {headers: {Authorization: token}});
-		const article = createNewArticleResponse.data.article;
+		const article = createNewArticleResponse.data;
 		const id = (Math.random() * Math.random()).toString();
 
 		return dispatch(
@@ -45,7 +45,7 @@ export const startAddArticle = (articleData: BodyCreateNewArticle) => {
 				tagList: article.tagList,
 				body: article.body,
 				slug: article.slug,
-				createdAt: parseInt((article.createdAt || '100')),
+				createdAt: 10000,
 				updatedAt: article.updatedAt,
 				description: article.description
 			})
