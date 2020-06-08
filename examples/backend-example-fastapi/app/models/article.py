@@ -3,14 +3,11 @@ from typing import List, Optional
 from pydantic import Schema
 
 from .dbmodel import DateTimeModelMixin, DBModelMixin
-from .profile import Profile
 from .rwmodel import RWModel
 
 
 class ArticleFilterParams(RWModel):
     tag: str = ""
-    author: str = ""
-    favorited: str = ""
     limit: int = 20
     offset: int = 0
 
@@ -24,10 +21,7 @@ class ArticleBase(RWModel):
 
 class Article(DateTimeModelMixin, ArticleBase):
     slug: str
-    author: Profile
     awesomeness: bool = True
-    favorited: bool
-    favorites_count: int = Schema(..., alias="favoritesCount")
 
 
 class ArticleInDB(DBModelMixin, Article):

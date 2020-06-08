@@ -6,9 +6,6 @@ from databases import DatabaseURL
 
 API_V1_STR = "/api"
 
-JWT_TOKEN_PREFIX = "Token"
-ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24 * 7  # one week
-
 load_dotenv(".env")
 
 MAX_CONNECTIONS_COUNT = int(os.getenv("MAX_CONNECTIONS_COUNT", 10))
@@ -34,8 +31,5 @@ else:
 
 database_name = MONGO_DB
 article_collection_name = "articles"
-favorites_collection_name = "favorites"
 tags_collection_name = "tags"
-users_collection_name = "users"
 comments_collection_name = "commentaries"
-followers_collection_name = "followers"

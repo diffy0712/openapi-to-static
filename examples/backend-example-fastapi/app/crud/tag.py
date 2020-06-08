@@ -18,8 +18,8 @@ async def get_tags_for_article(conn: AsyncIOMotorClient, slug: str) -> List[TagI
     tags = []
     article_tags = await conn[database_name][article_collection_name].find_one({"slug": slug},
                                                                                projection={"tag_list": True})
-    for row in article_tags["tag_list"]:
-        tags.append(TagInDB({"tag": row}))
+    ## for row in article_tags["tag_list"]:
+        ## tags.append(TagInDB({"tag": row}))
 
     return tags
 
