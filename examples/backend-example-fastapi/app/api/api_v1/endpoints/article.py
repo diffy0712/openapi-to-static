@@ -77,7 +77,7 @@ async def get_article(
     status_code=HTTP_201_CREATED,
 )
 async def create_new_article(
-        article: ArticleInCreate = Body(..., embed=True),
+        article: ArticleInCreate = Body(...),
         db: AsyncIOMotorClient = Depends(get_database),
 ):
     article_by_slug = await get_article_by_slug(
@@ -96,7 +96,7 @@ async def create_new_article(
 @router.put("/articles/{slug}", response_model=ArticleInResponse, tags=["articles"])
 async def update_article(
         slug: str = Path(..., min_length=1),
-        article: ArticleInUpdate = Body(..., embed=True),
+        article: ArticleInUpdate = Body(...),
         db: AsyncIOMotorClient = Depends(get_database),
 ):
     await check_article_for_existence_and_modifying_permissions(

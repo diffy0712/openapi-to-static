@@ -11,9 +11,8 @@ import Axios, {AxiosRequestConfig, AxiosResponse} from 'axios';
 import { ManyArticlesInResponse } from '../schemas/ManyArticlesInResponse';
 import { HttpValidationError } from '../schemas/HttpValidationError';
 import { ArticleInResponse } from '../schemas/ArticleInResponse';
-import { BodyCreateNewArticle } from '../schemas/BodyCreateNewArticle';
+import { ArticleInCreate } from '../schemas/ArticleInCreate';
 import {SSO_API_URL} from '../../settings';
-import { Article } from '../../../types/Article';
 
 /**
 * 
@@ -22,28 +21,28 @@ export const ApiArticles = {
 	/**
 	 * Get Articles
 	 */
-	getArticles: async (tag?: string, author?: string, favorited?: string, limit?: number, offset?: number, authorization?: string, config?: AxiosRequestConfig): Promise<AxiosResponse<ManyArticlesInResponse>> => {
-		return Axios.get<ManyArticlesInResponse>(`${SSO_API_URL}/api/articles?tag=${tag}&author=${author}&favorited=${favorited}&limit=${limit}&offset=${offset}`, config);
+	getArticles: async (tag?: string, limit?: number, offset?: number, config?: AxiosRequestConfig): Promise<AxiosResponse<ManyArticlesInResponse>> => {
+		return Axios.get<ManyArticlesInResponse>(`${SSO_API_URL}/api/articles?tag=${tag}&limit=${limit}&offset=${offset}`, config);
 	},
 
 	/**
 	 * Create New Article
 	 */
-	createNewArticle: async (data: BodyCreateNewArticle, authorization: string, config?: AxiosRequestConfig): Promise<AxiosResponse<Article>> => {
-		return Axios.post<Article>(`${SSO_API_URL}/api/articles`, data, config);
+	createNewArticle: async (data: ArticleInCreate, config?: AxiosRequestConfig): Promise<AxiosResponse<object>> => {
+		return Axios.post<object>(`${SSO_API_URL}/api/articles`, data, config);
 	},
 
 	/**
 	 * Get Article
 	 */
-	getArticle: async (slug: string, authorization?: string, config?: AxiosRequestConfig): Promise<AxiosResponse<ArticleInResponse>> => {
+	getArticle: async (slug: string, config?: AxiosRequestConfig): Promise<AxiosResponse<ArticleInResponse>> => {
 		return Axios.get<ArticleInResponse>(`${SSO_API_URL}/api/articles/${slug}`, config);
 	},
 
 	/**
 	 * Delete Article
 	 */
-	deleteArticle: async (slug: string, authorization: string, config?: AxiosRequestConfig): Promise<AxiosResponse<object>> => {
+	deleteArticle: async (slug: string, config?: AxiosRequestConfig): Promise<AxiosResponse<object>> => {
 		return Axios.delete<object>(`${SSO_API_URL}/api/articles/${slug}`, config);
 	},
 
