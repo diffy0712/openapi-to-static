@@ -8,11 +8,9 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 // @ts-ignore
 import Axios, {AxiosRequestConfig, AxiosResponse} from 'axios';
-import { ManyArticlesInResponse } from '../schemas/ManyArticlesInResponse';
-import { HttpValidationError } from '../schemas/HttpValidationError';
-import { ArticleInResponse } from '../schemas/ArticleInResponse';
-import { ArticleInCreate } from '../schemas/ArticleInCreate';
-import {SSO_API_URL} from '../../settings';
+import { ManyArticlesInResponse } from '../Schemas/ManyArticlesInResponse';
+import { ArticleInResponse } from '../Schemas/ArticleInResponse';
+import { ArticleInCreate } from '../Schemas/ArticleInCreate';
 
 /**
 * 
@@ -22,28 +20,28 @@ export const ApiArticles = {
 	 * Get Articles
 	 */
 	getArticles: async (tag?: string, limit?: number, offset?: number, config?: AxiosRequestConfig): Promise<AxiosResponse<ManyArticlesInResponse>> => {
-		return Axios.get<ManyArticlesInResponse>(`${SSO_API_URL}/api/articles?tag=${tag}&limit=${limit}&offset=${offset}`, config);
+		return Axios.get<ManyArticlesInResponse>(`http://localhost:8081/api/articles?tag=${tag}&limit=${limit}&offset=${offset}`, config);
 	},
 
 	/**
 	 * Create New Article
 	 */
 	createNewArticle: async (data: ArticleInCreate, config?: AxiosRequestConfig): Promise<AxiosResponse<object>> => {
-		return Axios.post<object>(`${SSO_API_URL}/api/articles`, data, config);
+		return Axios.post<object>('http://localhost:8081/api/articles', data, config);
 	},
 
 	/**
 	 * Get Article
 	 */
 	getArticle: async (slug: string, config?: AxiosRequestConfig): Promise<AxiosResponse<ArticleInResponse>> => {
-		return Axios.get<ArticleInResponse>(`${SSO_API_URL}/api/articles/${slug}`, config);
+		return Axios.get<ArticleInResponse>(`http://localhost:8081/api/articles/${slug}`, config);
 	},
 
 	/**
 	 * Delete Article
 	 */
 	deleteArticle: async (slug: string, config?: AxiosRequestConfig): Promise<AxiosResponse<object>> => {
-		return Axios.delete<object>(`${SSO_API_URL}/api/articles/${slug}`, config);
+		return Axios.delete<object>(`http://localhost:8081/api/articles/${slug}`, config);
 	},
 
 };

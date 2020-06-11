@@ -1,4 +1,4 @@
-import { Article } from '../types/Article';
+import { Article } from '../../Service/Main/Schemas/Article';
 import {
 	ADD_ARTICLE,
 	AppActions,
@@ -7,9 +7,9 @@ import {
 	SET_ARTICLES, ArticleActionTypes
 } from '../types/actions';
 import { Dispatch } from 'redux';
-import { AppState } from '../store/configureStore';
-import {ApiArticles} from '../api/main/services/ApiArticles';
-import {BodyCreateNewArticle} from '../api/main/schemas/BodyCreateNewArticle';
+import { AppState } from '../Store/configureStore';
+import { ApiArticles } from '../../Service/Main/Services/ApiArticles';
+import { BodyCreateNewArticle } from '../../Service/Main/Schemas/BodyCreateNewArticle';
 
 export const addArticle = (article: Article): AppActions => ({
 	type: ADD_ARTICLE,
@@ -45,7 +45,7 @@ export const startAddArticle = (articleData: BodyCreateNewArticle) => {
 				tagList: article.tagList,
 				body: article.body,
 				slug: article.slug,
-				createdAt: 10000,
+				createdAt: (10000).toString(),
 				updatedAt: article.updatedAt,
 				description: article.description
 			})

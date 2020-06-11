@@ -8,8 +8,7 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 // @ts-ignore
 import Axios, {AxiosRequestConfig, AxiosResponse} from 'axios';
-import { TagsList } from '../schemas/TagsList';
-import {SSO_API_URL} from '../../settings';
+import { TagsList } from '../Schemas/TagsList';
 
 /**
 * 
@@ -19,7 +18,7 @@ export const ApiTags = {
 	 * Get All Tags
 	 */
 	getAllTags: async (config?: AxiosRequestConfig): Promise<AxiosResponse<TagsList>> => {
-		return Axios.get<TagsList>(`${SSO_API_URL}/api/tags`, config);
+		return Axios.get<TagsList>('http://localhost:8081/api/tags', config);
 	},
 
 };

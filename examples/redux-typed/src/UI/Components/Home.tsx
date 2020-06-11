@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import {startRemoveArticle, startEditArticle, startAddArticle} from '../actions/articles';
-import { Article } from '../types/Article';
-import { AppState } from '../store/configureStore';
+import {startRemoveArticle, startEditArticle, startAddArticle} from '../../Redux/Actions/Articles';
+import { Article } from '../../Redux/types/Article';
+import { AppState } from '../../Redux/Store/configureStore';
 import { bindActionCreators } from 'redux';
-import { AppActions } from '../types/actions';
+import { AppActions } from '../../Redux/types/actions';
 import { ThunkDispatch } from 'redux-thunk';
 import {BodyCreateNewArticle} from '../api/main/schemas/BodyCreateNewArticle';
 
@@ -22,17 +22,10 @@ interface HomePageState {}
 
 type Props = HomePageProps & LinkStateProps & LinkDispatchProps;
 
-export class HomePagePage extends React.Component<Props, HomePageState> {
-	onCreate = (article: BodyCreateNewArticle): void => {
-		this.props.startCreateArticle(article);
-	};
-	onEdit = (article: Article): void => {
-		this.props.startEditArticle(article);
-	};
-	onRemove = (id: string): void => {
-		this.props.startRemoveArticle(id);
-	};
-	render(): object {
+export class HomePagePage extends Component<Props, HomePageState>
+{
+	render(): object
+	{
 		const { articles } = this.props;
 		return (
 			<Grid gridTemplateColumns="repeat(2, auto)" gridGap={3}>
@@ -49,10 +42,10 @@ export class HomePagePage extends React.Component<Props, HomePageState> {
 								<p>{article.title}</p>
 								<p>{article.description}</p>
 								<p>{article.body}</p>
-								<button onClick={() => this.onRemove(article.id)}>
+								<button onClick={(): void => this.onRemove(article.id)}>
 									Remove Article
 								</button>
-								<button onClick={() => this.onEdit(article)}>Edit Article</button>
+								<button onClick={(): void => this.onEdit(article)}>Edit Article</button>
 							</div>
 						))}
 					</div>
@@ -61,27 +54,39 @@ export class HomePagePage extends React.Component<Props, HomePageState> {
 			</Grid>
 		);
 	}
+
+	private onCreate(article: BodyCreateNewArticle): void
+	{
+		this.props.startCreateArticle(article);
+	}
+
+	private onEdit(article: Article): void
+	{
+		this.props.startEditArticle(article);
+	}
+
+	private onRemove(id: string): void
+	{
+		this.props.startRemoveArticle(id);
+	}
 }
 
 interface LinkStateProps {
 	articles: Article[];
 }
+const mapStateToProps = (
+	state: AppState
+): LinkStateProps => ({
+	articles: state.articles
+});
+
 interface LinkDispatchProps {
 	startCreateArticle: (article: BodyCreateNewArticle) => void;
 	startEditArticle: (article: Article) => void;
 	startRemoveArticle: (id: string) => void;
 }
-
-const mapStateToProps = (
-	state: AppState,
-	ownProps: HomePageProps
-): LinkStateProps => ({
-	articles: state.articles
-});
-
 const mapDispatchToProps = (
-	dispatch: ThunkDispatch<any, any, AppActions>,
-	ownProps: HomePageProps
+	dispatch: ThunkDispatch<any, any, AppActions>
 ): LinkDispatchProps => ({
 	startCreateArticle: bindActionCreators(startAddArticle, dispatch),
 	startEditArticle: bindActionCreators(startEditArticle, dispatch),
