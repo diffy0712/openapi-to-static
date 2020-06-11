@@ -5,7 +5,7 @@ import {
 	REMOVE_ARTICLE,
 	EDIT_ARTICLE,
 	SET_ARTICLES
-} from '../types/actions';
+} from '../types/Actions';
 
 const articlesReducerDefaultState: Article[] = [];
 
@@ -17,10 +17,10 @@ const articleReducer = (
 	case ADD_ARTICLE:
 		return [...state, action.article];
 	case REMOVE_ARTICLE:
-		return state.filter(({ id }) => id !== action.id);
+		return state.filter(({ slug }) => slug !== action.slug);
 	case EDIT_ARTICLE:
 		return state.map(article => {
-			if (article.id === action.article.id) {
+			if (article.slug === action.article.slug) {
 				return {
 					...article,
 					...action.article

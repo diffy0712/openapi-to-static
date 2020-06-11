@@ -17,8 +17,7 @@ import {GeneratorConfigInterface} from './GeneratorConfigInterface';
 // @ts-ignore
 import HelperOptions = Handlebars.HelperOptions;
 import {getTypeOfOpenApiSchemaType} from '../Util/OpenApi';
-import {isOpenApiReferenceObject, OpenApiReferenceObject} from "../Model/OpenApi/OpenApiReferenceObject";
-import {NoServiceGeneratorOptions} from "../Exception/NoServiceGeneratorOptions";
+import {isOpenApiReferenceObject, OpenApiReferenceObject} from '../Model/OpenApi/OpenApiReferenceObject';
 
 /**
  * Generate the typescript files based on an openApi json.
@@ -306,10 +305,7 @@ export default class ServiceGenerator implements GeneratorInterface {
 			return parameters.join(', ');
 		});
 		templateLoader.registerHelper('getRoute', (operation: OpenApiOperationObject, helperOptions: HelperOptions) => {
-			if (!config.options) {
-				throw new NoServiceGeneratorOptions('Please provide options for service generator!');
-			}
-			let route = '${' + config.options.apiUrlConstant.constant + '}' + helperOptions.data._parent.key;
+			let route = helperOptions.data._parent.key;
 			const queryParameters: string[] = [];
 			_.forEach(operation.parameters, (parameter: OpenApiParameterObject | OpenApiReferenceObject) => {
 				if (isOpenApiReferenceObject(parameter)){

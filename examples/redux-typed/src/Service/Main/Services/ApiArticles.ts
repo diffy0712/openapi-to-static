@@ -9,8 +9,11 @@
 // @ts-ignore
 import Axios, {AxiosRequestConfig, AxiosResponse} from 'axios';
 import { ManyArticlesInResponse } from '../Schemas/ManyArticlesInResponse';
+import { HttpValidationError } from '../Schemas/HttpValidationError';
 import { ArticleInResponse } from '../Schemas/ArticleInResponse';
 import { ArticleInCreate } from '../Schemas/ArticleInCreate';
+import { Article } from '../../../Redux/types/Article';
+
 
 /**
 * 
@@ -26,8 +29,8 @@ export const ApiArticles = {
 	/**
 	 * Create New Article
 	 */
-	createNewArticle: async (data: ArticleInCreate, config?: AxiosRequestConfig): Promise<AxiosResponse<object>> => {
-		return Axios.post<object>('http://localhost:8081/api/articles', data, config);
+	createNewArticle: async (data: ArticleInCreate, config?: AxiosRequestConfig): Promise<AxiosResponse<Article>> => {
+		return Axios.post<Article>(`http://localhost:8081/api/articles`, data, config);
 	},
 
 	/**

@@ -18,7 +18,7 @@ export interface EditArticleAction {
 
 export interface RemoveArticleAction {
   type: typeof REMOVE_ARTICLE;
-  id: string;
+  slug: string;
 }
 
 export interface AddArticleAction {

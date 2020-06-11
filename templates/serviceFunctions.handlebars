@@ -9,7 +9,7 @@
 // @ts-ignore
 import Axios, {AxiosRequestConfig, AxiosResponse} from 'axios';
 {{#each schemas}}
-import { {{.}} } from '../schemas/{{.}}';
+import { {{.}} } from '../Schemas/{{.}}';
 {{/each}}
 {{{config.options.apiUrlConstant.import}}}
 
@@ -25,7 +25,7 @@ export const {{name}} = {
 	 * {{description}}{{/if}}
 	 */
 	{{camel_case summary}}: async ({{getParameters .}}): Promise<AxiosResponse<{{getAxiosResponseType .}}>> => {
-		return Axios.{{@key}}<{{getAxiosResponseType .}}>(`{{{getRoute .}}}`{{#if requestBody}}, data{{/if}}, config);
+		return Axios.{{@key}}<{{getAxiosResponseType .}}>(`http://localhost:8081{{{getRoute .}}}`{{#if requestBody}}, data{{/if}}, config);
 	},
 
     {{/each}}
