@@ -10,7 +10,7 @@ import { ThunkDispatch } from 'redux-thunk';
 import { ArticleInCreate } from '../../../Service/Main/Schemas/ArticleInCreate';
 
 import renderTemplate from './Template';
-import { Props, HomePageState, LinkStateProps, LinkDispatchProps } from './Interfaces';
+import { Props, HomePageState, HomeStateProps, HomeDispatchProps } from './Template';
 
 export class Home extends Component<Props, HomePageState>
 {
@@ -46,13 +46,13 @@ export class Home extends Component<Props, HomePageState>
 
 const mapStateToProps = (
 	state: AppState
-): LinkStateProps => ({
+): HomeStateProps => ({
 	articles: state.articles
 });
 
 const mapDispatchToProps = (
 	dispatch: ThunkDispatch<any, any, AppActions>
-): LinkDispatchProps => ({
+): HomeDispatchProps => ({
 	startCreateArticle: bindActionCreators(startAddArticle, dispatch),
 	startEditArticle: bindActionCreators(startEditArticle, dispatch),
 	startRemoveArticle: bindActionCreators(startRemoveArticle, dispatch)

@@ -18,10 +18,12 @@
   "author": "Ferencz Dávid <ferencz.david@protonmail.com>",
   "license": "MIT",
   "dependencies": {
+    "@lourenci/react-kanban": "^2.0.0",
     "@types/axios": "^0.14.0",
     "@types/lodash": "^4.14.149",
     "@types/node": "^13.7.4",
     "@types/node-fetch": "^2.5.4",
+    "antd": "^4.3.5",
     "axios": "^0.19.2",
     "handlebars": "^4.7.3",
     "lodash": "^4.17.15",
