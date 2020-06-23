@@ -1,27 +1,20 @@
 import React from 'react';
 import { observer } from "mobx-react"
 
-import { Article } from '../../../../Service/Main/Schemas/Article';
+import { Article } from '../../../../../Service/Main/Schemas/Article';
+
+import template from './ArticleView.pug';
 
 export interface ArticleViewProps {
   article: Article
 }
-  
+
 @observer
 export default class ArticleView extends React.Component<ArticleViewProps> {
   render() {
-    const article = this.props.article;
-    return (
-      <li onDoubleClick={ this.onRename }>
-        <input
-          type='checkbox'
-          checked={ article.awesomeness }
-          onChange={ this.onToggleCompleted }
-        />
-        { article.title }
-        <small>{ article.description }</small>
-      </li>
-    );
+    return template.call(this, {
+      article: this.props.article
+    });
   }
 
   onToggleCompleted = () => {

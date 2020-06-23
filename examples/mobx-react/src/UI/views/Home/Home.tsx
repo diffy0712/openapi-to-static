@@ -1,12 +1,14 @@
-import React from 'react';
+import { Component } from 'react';
 import { observer } from "mobx-react"
 import logo from '../../assets/logo.svg';
 import './Home.css';
 
-import ArticleView from './ArticleView';
+import ArticleView from '../../components/widgets/Article/ArticleView';
 import { ArticleStore } from '../../../Store/ArticleStore';
 import Board from '@lourenci/react-kanban';
 import '@lourenci/react-kanban/dist/styles.css';
+
+import template from './index.pug';
 
 const board = {
   columns: [
@@ -40,25 +42,17 @@ export interface HomeProps {
 }
 
 @observer
-export default class Home extends React.Component<HomeProps> {
+export default class Home extends Component<HomeProps> {
   render() {
-      const store = this.props.store;
-      return (
-      <div>
-          <img src={logo} className="App-logo" alt="logo" />
-          { store.report }
-          <ul>
-          { store.articles.map(
-          (article, idx) => <ArticleView article={ article } key={ idx } />
-          ) }
-          </ul>
-          { store.pendingRequests > 0 ? 'Loading...' : null }
-          <button onClick={ this.onNewTodo }>New Todo</button>
-          <small> (double-click a todo to edit)</small>
-
-          <Board initialBoard={board} />
-      </div>
-      );
+    return template.call(this, {
+      // variables
+      report: this.props.store.report,
+      articles: this.props.store.articles,
+      board,
+      // components
+      Board,
+      ArticleView
+    });
   }
 
   onNewTodo = () => {

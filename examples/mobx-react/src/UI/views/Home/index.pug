@@ -1,0 +1,8 @@
+div
+    img(src='{logo}' className='App-logo' alt='logo')
+    | {report}
+    ul
+        ArticleView(@repeat='articles as article' article='{article}')
+    button(onClick='{()=> this.onNewTodo()}') Add article
+    small  (double-click a todo to edit)
+    Board(initialBoard='{board}')

@@ -1,0 +1,8 @@
+li(onDoubleClick='{()=> this.onRename()}')
+    input(
+        type="checkbox"
+        checked='{article.awesomeness}'
+        onChange='{()=> this.onToggleCompleted()}')
+    | {article.title}
+    small
+    | {article.description}
