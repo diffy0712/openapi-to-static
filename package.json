@@ -4,7 +4,7 @@
   "description": "Generate static typescript files from openapi.json! ",
   "repository": "https://gitlab.com/diffy0712/openapi-ts-sync",
   "scripts": {
-    "api-sync": "node ./lib/index.js --config=openapi-ts-sync.json",
+    "api-sync": "node ./lib/index.js --config=./examples/redux-typed/openapi-ts-sync.json",
     "build": "node node_modules/.bin/tsc",
     "lint": "yarn eslint . --ext .js,.jsx,.ts,.tsx"
   },

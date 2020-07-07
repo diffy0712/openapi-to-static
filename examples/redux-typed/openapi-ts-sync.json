@@ -6,13 +6,13 @@
     "generators": [
       {
         "type": "./Generator/SchemaGenerator",
-        "workingDir": "./src/Service/Main/Schemas/",
-        "template": "../../templates/schemaInterface.handlebars"
+        "workingDir": "./tmp/Service/Main/Schemas/",
+        "template": "./templates/schemaInterface.handlebars"
       },
       {
         "type": "./Generator/ServiceGenerator",
-        "workingDir": "./src/Service/Main/Services/",
-        "template": "../../templates/serviceFunctions.handlebars"
+        "workingDir": "./tmp/Service/Main/Services/",
+        "template": "./templates/serviceFunctions.handlebars"
       }
     ]
   }

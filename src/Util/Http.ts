@@ -1,4 +1,5 @@
 import fetch from 'node-fetch';
+import { ApiArticles } from './tmp/Service/Main/Services/ApiArticles';
 
 /**
  * Fetch a url for data.
