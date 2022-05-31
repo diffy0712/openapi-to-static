@@ -28,11 +28,8 @@ export default class SchemaGenerator implements GeneratorInterface {
 			// save them into files
 			const templatePath = this.config.template;
 			if (this.openApi.components) {
-				_.forEach(this.openApi.components.schemas, async (schema: OpenApiSchemaObject | OpenApiReferenceObject) => {
-					if (isOpenApiReferenceObject(schema) || !schema.title){
-						return; // todo: what should I do with reference objects?
-					}
-					schema.title = _.camelCase(schema.title);
+				_.forEach(this.openApi.components.schemas, async (schema: OpenApiSchemaObject, key: string) => {
+					schema.title = _.camelCase(key);
 					schema.title = schema.title.charAt(0).toUpperCase() + schema.title.slice(1);
 					const schemaData: SchemaData = this.getSchemaData(schema);
 

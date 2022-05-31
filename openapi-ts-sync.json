@@ -1,0 +1,19 @@
+[
+  {
+    "name": "main",
+    "path": "http://localhost:7263/swagger/v1/swagger.json",
+    "debug": true,
+    "generators": [
+      {
+        "type": "./Generator/SchemaGenerator",
+        "workingDir": "./generated/Service/Main/Schemas/",
+        "template": "./templates/schemaInterface.handlebars"
+      },
+      {
+        "type": "./Generator/ServiceGenerator",
+        "workingDir": "./generated/Service/Main/Services/",
+        "template": "./templates/serviceFunctions.handlebars"
+      }
+    ]
+  }
+]
